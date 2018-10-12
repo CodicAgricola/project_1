@@ -23,9 +23,20 @@ int main(int argc, char *argv[]) {
 
     for(int i = 0; i < row; i++) {
         for(int j = 0; j < col; j++) {
-            cout << matrix[i][j];
+            if(i > 0) {
+                if(matrix[i][j] < matrix[i - 1][j]) continue;
+            } 
+            if(i < row - 1) {
+                if(matrix[i][j] < matrix[i + 1][j]) continue;
+            }
+            if(j > 0) {
+                if(matrix[i][j] < matrix[i][j - 1]) continue;
+            }
+            if(j < col - 1) {
+                if(matrix[i][j] < matrix[i][j + 1]) continue; 
+            }
+            cout << i + 1 << " " << j + 1 << " " << matrix[i][j] << endl;
         }
-        cout << endl;
     }
 
     return 0;
