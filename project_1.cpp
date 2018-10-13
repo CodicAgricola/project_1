@@ -55,9 +55,15 @@ int main(int argc, char *argv[]) {
         row_idx = (row_idx + 1)%3;
     }
 
-    cout << num  << endl;
+    ofstream outFile("final.peak", ios::out);
+    if(! outFile) {
+        cout << "cannot open" << endl;
+        return 1;
+    }
+
+    outFile << num  << endl;
     for(int i = 0; i < num; i++) {
-        cout << peak_array[i].row  << " " << peak_array[i].col << endl;
+        outFile << peak_array[i].row  << " " << peak_array[i].col << endl;
     }
 
     return 0;
