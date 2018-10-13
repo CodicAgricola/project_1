@@ -2,17 +2,16 @@
 #include <string>
 #include <fstream>
 using namespace std;
-int matrix[1000][1000];
+
 
 struct PEAK {
     int row;
     int col;
 } peak;
 
-PEAK peak_array[1000000];
-
 int main(int argc, char *argv[]) {
     int row, col;
+    int row_idx = 0;
     int num = 0;
     
     ifstream inFile(argv[1] + string("/matrix.data"), ios::in);
@@ -23,31 +22,37 @@ int main(int argc, char *argv[]) {
 
     inFile >> row;
     inFile >> col;
+    int matrix[3][col];
+    PEAK peak_array[row*col];
 
-    for(int i = 0; i < row; i++) {
-        for(int j = 0; j < col; j++) {
-            inFile >> matrix[i][j];
-        }
+    for(int i = 0; i < col; i++) {//load first row
+        inFile >> matrix[row_idx][i];
     }
 
     for(int i = 0; i < row; i++) {
+        for(int j = 0; j < col; j++) {//load data of next row
+            inFile >> matrix[(row_idx + 1)%3][j];
+        }
+
         for(int j = 0; j < col; j++) {
             if(i > 0) {
-                if(matrix[i][j] < matrix[i - 1][j]) continue;
+                if(matrix[row_idx][j] < matrix[(row_idx + 2)%3][j]) continue;
             } 
             if(i < row - 1) {
-                if(matrix[i][j] < matrix[i + 1][j]) continue;
+                if(matrix[row_idx][j] < matrix[(row_idx + 1)%3][j]) continue;
             }
             if(j > 0) {
-                if(matrix[i][j] < matrix[i][j - 1]) continue;
+                if(matrix[row_idx][j] < matrix[row_idx][j - 1]) continue;
             }
             if(j < col - 1) {
-                if(matrix[i][j] < matrix[i][j + 1]) continue; 
+                if(matrix[row_idx][j] < matrix[row_idx][j + 1]) continue; 
             }
             peak_array[num].row = i + 1;
             peak_array[num].col = j + 1;
             num++;
         }
+
+        row_idx = (row_idx + 1)%3;
     }
 
     cout << num  << endl;
