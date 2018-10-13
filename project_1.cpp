@@ -1,12 +1,21 @@
 #include <iostream> 
+#include <string>
 #include <fstream>
 using namespace std;
 int matrix[1000][1000];
 
+struct PEAK {
+    int row;
+    int col;
+} peak;
+
+PEAK peak_array[1000000];
+
 int main(int argc, char *argv[]) {
     int row, col;
+    int num = 0;
     
-    ifstream inFile(argv[1], ios::in);
+    ifstream inFile(argv[1] + string("/matrix.data"), ios::in);
     if(!inFile) {
         cout << "cannot open";
         return 1;
@@ -35,8 +44,15 @@ int main(int argc, char *argv[]) {
             if(j < col - 1) {
                 if(matrix[i][j] < matrix[i][j + 1]) continue; 
             }
-            cout << i + 1 << " " << j + 1 << " " << matrix[i][j] << endl;
+            peak_array[num].row = i + 1;
+            peak_array[num].col = j + 1;
+            num++;
         }
+    }
+
+    cout << num  << endl;
+    for(int i = 0; i < num; i++) {
+        cout << peak_array[i].row  << " " << peak_array[i].col << endl;
     }
 
     return 0;
